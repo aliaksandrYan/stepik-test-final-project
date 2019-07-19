@@ -14,20 +14,26 @@ class ProductPage(BasePage):
         self.should_be_adding_to_basket_message()
         self.should_be_price_of_basket_message()
 
-
+    
     def should_be_adding_button(self):
     	assert self.is_element_present(*ProductPageLocators.ADD_BUTTON), "There are no adding button!"
 
     def should_be_product_name(self):
-    	assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "Product name not found!"
-    	self.name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
+        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "Product name not found!"
+        self.name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
         
     def should_be_product_price(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_PRICE_TAG), "Product price not found!"
         self.price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE_TAG).text
+
     def should_be_adding_to_basket_message(self):
         assert self.is_element_present(*ProductPageLocators.BASKET_ADDING_MESSAGE_TAG), "There are no 'added to basket' message!"
         assert self.name == self.browser.find_element(*ProductPageLocators.BASKET_ADDING_MESSAGE_TAG).text, "Product names don't match!"
     def should_be_price_of_basket_message(self):
-    	assert self.is_element_present(*ProductPageLocators.BASKET_PRICE_MESSAGE_TAG), "There are no total price of basket!"
-    	assert self.price == self.browser.find_element(*ProductPageLocators.BASKET_PRICE_MESSAGE_TAG).text, "Product prices don't match!"
+        assert self.is_element_present(*ProductPageLocators.BASKET_PRICE_MESSAGE_TAG), "There are no total price of basket!"
+        assert self.price == self.browser.find_element(*ProductPageLocators.BASKET_PRICE_MESSAGE_TAG).text, "Product prices don't match!"
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.BASKET_ADDING_MESSAGE_TAG),"Success message is presented, but should not be"
+    def should_disappeared(self):
+        assert self.is_disappeared(*ProductPageLocators.BASKET_ADDING_MESSAGE_TAG),"Success message is presented, but should not be"
+
