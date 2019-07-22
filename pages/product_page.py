@@ -16,7 +16,7 @@ class ProductPage(BasePage):
 
     
     def should_be_adding_button(self):
-    	assert self.is_element_present(*ProductPageLocators.ADD_BUTTON), "There are no adding button!"
+        assert self.is_element_present(*ProductPageLocators.ADD_BUTTON), "There are no adding button!"
 
     def should_be_product_name(self):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "Product name not found!"
