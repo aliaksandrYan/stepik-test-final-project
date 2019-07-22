@@ -1,7 +1,8 @@
 import pytest
 from pages.product_page import ProductPage
 from pages.cart_page import CartPage
-
+from pages.login_page import LoginPage
+import time
 
 links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
@@ -15,6 +16,30 @@ links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?pr
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"]
 
 link_product = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+
+@pytest.mark.login_user
+class TestUserAddToCartFromProductPage(object):
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self,browser):
+        self.browser = browser
+        self.default_link = "http://selenium1py.pythonanywhere.com"
+        page = LoginPage(self.browser, self.default_link)
+        page.open()
+        email = str(time.time()) + "@fakemail.org"
+        page.register_new_user(email,"superpass123")
+        page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self,browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+    @pytest.mark.parametrize('link', links)
+    def test_user_can_add_product_to_cart(self,browser,link):
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_to_basket()
+
 
 @pytest.mark.parametrize('link', links)
 def test_guest_can_add_product_to_cart(browser,link):
